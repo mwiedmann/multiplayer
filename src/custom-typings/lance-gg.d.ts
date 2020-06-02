@@ -63,7 +63,7 @@ declare type ClientEngineInputOptions = {
 
 export class ClientEngine<GE extends GameEngine<PhysicsEngine>> {
   constructor(
-    gameEngine: GE,
+    public gameEngine: GE,
     inputOptions: ClientEngineInputOptions,
     rendererClass: { new (...args: any[]): Renderer<GE, ClientEngine<GE>> }
   )
@@ -187,7 +187,7 @@ export class GameEngine<PE extends PhysicsEngine> {
 
   ignorePhysics: boolean
 
-  renderer: Renderer
+  renderer: Renderer<GameEngine<PE>, ClientEngine<GameEngine<PE>>>
 
   constructor(options: GameEngineOptions)
 
@@ -398,9 +398,9 @@ export class GameWorld {
 
   getNewId(): any
 
-  queryObject(query: any): any
+  queryObject<T>(query: any): T
 
-  queryObjects(query: any): any
+  queryObjects<T>(query: any): T[]
 
   removeObject(id: any): void
 }

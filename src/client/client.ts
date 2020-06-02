@@ -1,6 +1,7 @@
 import * as querystring from 'query-string'
-import { Renderer, ClientEngine, ClientEngineInputOptions } from 'lance-gg'
+import { ClientEngineInputOptions } from 'lance-gg'
 import Game from '../common/game-engine'
+import MyClientEngine from './my-client-engine'
 
 const qsOptions = querystring.parse(location.search)
 
@@ -21,7 +22,7 @@ let options: ClientEngineInputOptions = { ...defaults, ...qsOptions }
 
 // create a client engine and a game engine
 const gameEngine = new Game(options)
-const clientEngine = new ClientEngine(gameEngine, options, Renderer)
+const clientEngine = new MyClientEngine(gameEngine, options)
 
 document.addEventListener('DOMContentLoaded', function (e) {
   clientEngine.start()

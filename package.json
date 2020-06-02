@@ -5,6 +5,7 @@
   "sideEffects": false,
   "dependencies": {
     "lance-gg": "4.0.8",
+    "phaser": "3.23.0",
     "query-string": "6.12.1",
     "react": "16.13.1",
     "react-bootstrap": "1.0.1",
@@ -24,6 +25,7 @@
     "@typescript-eslint/parser": "2.32.0",
     "body-parser": "1.19.0",
     "clean-webpack-plugin": "3.0.0",
+    "copy-webpack-plugin": "5.1.1",
     "cors": "2.8.5",
     "css-loader": "3.5.3",
     "dotenv": "8.2.0",

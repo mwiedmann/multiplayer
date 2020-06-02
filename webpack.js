@@ -1,5 +1,6 @@
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const { CleanWebpackPlugin } = require('clean-webpack-plugin')
+const CopyPlugin = require('copy-webpack-plugin')
 
 /**
  * This shows webpacks ability to import css files using css-loader and inject into the dom with style-loader.
@@ -29,6 +30,7 @@ const config = (env) => ({
   },
   plugins: [
     new CleanWebpackPlugin(),
+    new CopyPlugin([{ from: 'src/images', to: 'images' }]),
     new HtmlWebpackPlugin({
       template: 'src/index.ejs',
       minify: false,

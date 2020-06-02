@@ -4,7 +4,8 @@ import * as express from 'express'
 import * as cors from 'cors'
 import * as socketIO from 'socket.io'
 import Game from '../common/game-engine'
-import { ServerEngine, Lib } from 'lance-gg'
+import { Lib } from 'lance-gg'
+import MyServerEngine from './my-server-engine'
 
 const PORT = process.env.PORT || 3001
 
@@ -25,7 +26,7 @@ const io = socketIO(requestHandler)
 
 // Game Instances
 const gameEngine = new Game({ traceLevel: Lib.Trace.TRACE_NONE })
-const serverEngine = new ServerEngine(io, gameEngine, { debug: {}, updateRate: 6 })
+const serverEngine = new MyServerEngine(io, gameEngine, { debug: {}, updateRate: 6 })
 
 // start the game
 serverEngine.start()
