@@ -14,8 +14,8 @@ export default class Game extends GameEngine<SimplePhysicsEngine> {
   initWorld() {
     super.initWorld({
       worldWrap: true,
-      width: 600,
-      height: 600,
+      width: 1000,
+      height: 1000,
     })
   }
 
@@ -32,16 +32,21 @@ export default class Game extends GameEngine<SimplePhysicsEngine> {
       ship.accelerate(0.1)
     }
 
-    if (inputData.input === 'down') {
-      ship.accelerate(-0.1)
-    }
+    // if (inputData.input === 'down') {
+    //   ship.accelerate(-0.1)
+    // }
 
     if (inputData.input === 'left') {
-      ship.turnLeft(6)
+      ship.turnLeft(3)
     }
 
     if (inputData.input === 'right') {
-      ship.turnRight(6)
+      ship.turnRight(3)
     }
+
+    // Set limits
+    // if (ship.velocity.length() > velocityLimit) {
+    //   ship.velocity = ship.velocity.normalize().multiplyScalar(velocityLimit)
+    // }
   }
 }

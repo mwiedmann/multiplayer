@@ -57,6 +57,7 @@ declare type ClientEngineInputOptions = {
     sync: 'interpolate' | 'extrapolate' | 'frameSync'
     localObjBending?: number
     remoteObjBending?: number
+    bendingIncrements?: number
   }
   serverURL?: String
 }

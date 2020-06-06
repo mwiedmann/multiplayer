@@ -8,15 +8,14 @@ const qsOptions = querystring.parse(location.search)
 // default options, overwritten by query-string options
 // is sent to both game engine and client engine
 const defaults: ClientEngineInputOptions = {
-  // traceLevel: Lib.Trace.TRACE_NONE,
-  delayInputCount: 3,
+  delayInputCount: 8,
   scheduler: 'render-schedule',
   syncOptions: {
     sync: (qsOptions.sync as any) || 'extrapolate',
-    remoteObjBending: 0.8,
-    // bendingIncrements: 6,
+    localObjBending: 0.2,
+    remoteObjBending: 0.5,
   },
-  serverURL: 'localhost:3001',
+  serverURL: '192.168.0.4:3001',
 }
 let options: ClientEngineInputOptions = { ...defaults, ...qsOptions }
 

@@ -5,9 +5,25 @@ export class Ship extends DynamicObject<GameEngine<SimplePhysicsEngine>, SimpleP
     super(gameEngine, options, props)
   }
 
-  // avoid gradual synchronization of velocity
-  get bending() {
-    return { velocity: { percent: 0.0 } }
+  bendToCurrent(
+    original: DynamicObject<GameEngine<SimplePhysicsEngine>, SimplePhysicsEngine>,
+    percent,
+    worldSettings,
+    isLocal,
+    increments
+  ) {
+    const distance = original.position.clone().subtract(this.position).length()
+
+    if (distance > 25) {
+      console.log('distance', distance)
+      super.bendToCurrent(original, 1, worldSettings, isLocal, 1)
+    } else {
+      super.bendToCurrent(original, percent, worldSettings, isLocal, increments)
+    }
+  }
+
+  get maxSpeed() {
+    return 5
   }
 
   syncTo(other) {
