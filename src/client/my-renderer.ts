@@ -2,7 +2,8 @@ import { Renderer } from 'lance-gg'
 import Game from '../common/game-engine'
 import MyClientEngine from './my-client-engine'
 import { startPhaser, updatePhaser } from './phaser/phaser-init'
-import { Ship } from '../common/game-objects/ship'
+import { Character } from '../common/game-objects/character'
+import { Dungeon } from '../common/game-objects/dungeon'
 
 export default class MyRenderer extends Renderer<Game, MyClientEngine> {
   constructor(gameEngine, clientEngine) {
@@ -19,8 +20,9 @@ export default class MyRenderer extends Renderer<Game, MyClientEngine> {
   draw(t: number, dt?: number) {
     super.draw(t, dt)
 
-    let ships = this.gameEngine.world.queryObjects<Ship>({ instanceType: Ship })
+    let characters = this.gameEngine.world.queryObjects<Character>({ instanceType: Character })
+    let dungeon = this.gameEngine.world.queryObject<Dungeon>({ instanceType: Dungeon })
 
-    updatePhaser(ships)
+    updatePhaser(characters, dungeon)
   }
 }

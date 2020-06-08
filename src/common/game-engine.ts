@@ -1,5 +1,6 @@
 import { GameEngine, SimplePhysicsEngine } from 'lance-gg'
-import { Ship } from './game-objects/ship'
+import { Character } from './game-objects/character'
+import { Dungeon } from './game-objects/dungeon'
 
 export default class Game extends GameEngine<SimplePhysicsEngine> {
   constructor(options) {
@@ -8,14 +9,15 @@ export default class Game extends GameEngine<SimplePhysicsEngine> {
   }
 
   registerClasses(serializer) {
-    serializer.registerClass(Ship)
+    serializer.registerClass(Character)
+    serializer.registerClass(Dungeon)
   }
 
   initWorld() {
     super.initWorld({
-      worldWrap: true,
-      width: 1000,
-      height: 1000,
+      worldWrap: false,
+      width: 1600,
+      height: 1600,
     })
   }
 
@@ -23,30 +25,25 @@ export default class Game extends GameEngine<SimplePhysicsEngine> {
     super.start()
   }
 
-  processInput(inputData, playerId) {
-    super.processInput(inputData, playerId)
+  step(isReenact: boolean, t: number, dt: number, physicsOnly: boolean) {
+    super.step(isReenact, t, dt, physicsOnly)
 
-    let ship = this.world.queryObject<Ship>({ playerId })
+    const characters = this.world.queryObjects<Character>({ instanceType: Character })
 
-    if (inputData.input === 'up') {
-      ship.accelerate(0.1)
+    characters.forEach((character) => {
+      character.move()
+    })
+  }
+
+  processInput(inputData, playerId, isServer) {
+    super.processInput(inputData, playerId, isServer)
+
+    const character = this.world.queryObject<Character>({ playerId })
+
+    if (!character) {
+      return
     }
 
-    // if (inputData.input === 'down') {
-    //   ship.accelerate(-0.1)
-    // }
-
-    if (inputData.input === 'left') {
-      ship.turnLeft(3)
-    }
-
-    if (inputData.input === 'right') {
-      ship.turnRight(3)
-    }
-
-    // Set limits
-    // if (ship.velocity.length() > velocityLimit) {
-    //   ship.velocity = ship.velocity.normalize().multiplyScalar(velocityLimit)
-    // }
+    character.nextMove = inputData.input
   }
 }

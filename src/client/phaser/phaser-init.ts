@@ -1,10 +1,13 @@
 import * as Phaser from 'phaser'
-import { Ship as NetShip } from '../../common/game-objects/ship'
-import { Ship } from './ship'
+import { Character as NetCharacter } from '../../common/game-objects/character'
+import { Dungeon as NetDungeon } from '../../common/game-objects/dungeon'
+import { Character } from './character'
+import { Wall } from './wall'
 
 let scene: Phaser.Scene
 
-let ships: Ship[] = []
+let characters: Character[] = []
+let walls: Wall[] = []
 
 /** Load all the images we need and assign them names */
 function preload(this: Phaser.Scene) {
@@ -12,6 +15,8 @@ function preload(this: Phaser.Scene) {
   this.load.image('ship2', 'images/ship2.png')
   this.load.image('ship3', 'images/ship3.png')
   this.load.image('ship0', 'images/ship0.png')
+
+  this.load.image('wall', 'images/wall.png')
 }
 
 /** Create all the physics groups we need and setup colliders between the ones we want to interact. */
@@ -24,8 +29,8 @@ function update(this: Phaser.Scene) {}
 export const startPhaser = () => {
   return new Phaser.Game({
     type: Phaser.AUTO,
-    width: 1000,
-    height: 1000,
+    width: 1700,
+    height: 1700,
     scale: {
       mode: Phaser.Scale.ScaleModes.FIT,
       autoCenter: Phaser.Scale.CENTER_BOTH,
@@ -39,21 +44,38 @@ export const startPhaser = () => {
   })
 }
 
-export const updatePhaser = (netShips: NetShip[]) => {
+const screenSizePadding = 50
+const postionTranslate = (val: number) => val * 32 + screenSizePadding
+
+export const updatePhaser = (netCharacter: NetCharacter[], netDungeon: NetDungeon) => {
   if (!scene) {
     return
   }
 
-  netShips.forEach((netShip) => {
-    let ship = ships.find((s) => s.playerId === netShip.playerId)
+  netCharacter.forEach((netCharacter) => {
+    let character = characters.find((s) => s.playerId === netCharacter.playerId)
 
-    if (!ship) {
-      ship = new Ship(scene, netShip.position.x, netShip.position.y, '', netShip.playerId)
-      scene.add.existing(ship)
-      ships.push(ship)
+    if (!character) {
+      character = new Character(scene, netCharacter.position.x, netCharacter.position.y, '', netCharacter.playerId)
+      scene.add.existing(character)
+      characters.push(character)
     }
 
-    ship.setAngle(netShip.angle)
-    ship.setPosition(netShip.position.x, netShip.position.y)
+    // character.setPosition(netCharacter.gridX * 32, netCharacter.gridY * 32)
+    character.setPosition(netCharacter.position.x + screenSizePadding, netCharacter.position.y + screenSizePadding)
   })
+
+  if (netDungeon) {
+    for (let i = 0; i < netDungeon.wallsX.length; i++) {
+      let wall = walls.find((w) => w.wallId === i)
+
+      if (!wall) {
+        wall = new Wall(scene, postionTranslate(netDungeon.wallsX[i]), postionTranslate(netDungeon.wallsY[i]), '', i)
+        scene.add.existing(wall)
+        walls.push(wall)
+      } else {
+        wall.setPosition(postionTranslate(netDungeon.wallsX[i]), postionTranslate(netDungeon.wallsY[i]))
+      }
+    }
+  }
 }

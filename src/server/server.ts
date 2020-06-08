@@ -26,7 +26,12 @@ const io = socketIO(requestHandler)
 
 // Game Instances
 const gameEngine = new Game({ traceLevel: Lib.Trace.TRACE_NONE })
-const serverEngine = new MyServerEngine(io, gameEngine, { debug: {}, updateRate: 6, timeoutInterval: 0 })
+const serverEngine = new MyServerEngine(io, gameEngine, {
+  debug: {},
+  /* updateRate: 2, stepRate: 8,*/
+
+  timeoutInterval: 0,
+})
 
 // start the game
 serverEngine.start()
